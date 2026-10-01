@@ -24,12 +24,21 @@ control.
 
 ## 🚀 Install (3 steps)
 
-> **Requirements:** Windows 10 or 11, and [Python 3.10+](https://www.python.org/downloads/).
+> **Requirements:** Windows 10 or 11, and **Python 3.10, 3.11, 3.12, or 3.13**
+> ([3.12 recommended](https://www.python.org/downloads/release/python-3127/)).
 > When installing Python, tick **"Add python.exe to PATH"**.
+>
+> ⚠️ **Python 3.14 is not supported yet.** The offline speech engine
+> (faster-whisper → ctranslate2 / onnxruntime) and NumPy don't publish Windows
+> packages for 3.14 at the time of writing, so the install would fail. If 3.14 is
+> all you have, install 3.12 alongside it — `install.bat` will automatically use
+> the compatible one, and you can keep 3.14 for everything else.
 
 1. **Download** this project and unzip it anywhere (e.g. your Desktop).
-2. **Double-click `install.bat`.** It creates a self-contained `.venv` folder and
-   installs everything. This takes a few minutes the first time.
+2. **Double-click `install.bat`.** It finds a compatible Python (3.10–3.13),
+   creates a self-contained `.venv` folder, and installs everything. This takes a
+   few minutes the first time. If it can't find a supported Python, it tells you
+   exactly which version to install.
 3. **Double-click `run.bat`.** FlowSpeak starts and lives in your system tray.
 
 That's it. The first time you dictate, the speech model downloads automatically;
@@ -109,6 +118,12 @@ the network unless you explicitly enable a cloud engine.
 
 ## 🛠️ Troubleshooting
 
+**`No module named 'numpy'` (or the app won't start after install).** This almost
+always means the dependencies didn't install because your default Python is too
+new (3.14+). Install **Python 3.12** from python.org (tick *"Add python.exe to
+PATH"*), then double-click **`install.bat`** again — it will detect 3.12, rebuild
+the environment, and install everything. You don't need to uninstall 3.14.
+
 **The hotkey does nothing.** The global keyboard hook sometimes needs elevated
 rights. Right-click `run.bat` → *Run as administrator*. (If you dictate into apps
 that themselves run as admin, FlowSpeak must be elevated too.)
@@ -172,7 +187,11 @@ legacy-rust-tauri/ the original Rust/Tauri version, archived for reference
 ```
 
 The pure-logic modules (`config`, `cleanup`, `stats`, `statemachine`) have no
-hardware or GUI dependencies and are covered by the tests.
+hardware or GUI dependencies and are covered by unit tests. A headless
+integration smoke test (`tests/test_integration_smoke.py`) drives the full
+hotkey → record → transcribe → clean → paste → stats pipeline with the mic,
+GUI, and speech model replaced by in-process fakes, so the whole app can be
+verified on any machine (no microphone, display, or model download required).
 
 ---
 
