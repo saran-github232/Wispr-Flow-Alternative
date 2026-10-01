@@ -1,0 +1,38 @@
+# FlowSpeak — Python app
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+
+# Virtual environment created by install.bat
+.venv/
+venv/
+
+# Build output (PyInstaller)
+build/
+dist/
+*.spec.bak
+
+# Downloaded speech models live in %APPDATA%\FlowSpeak, not here, but ignore stray ones
+*.bin
+*.gguf
+
+# User data / secrets
+config.json
+*.env
+.env*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Legacy Rust/Tauri build artifacts (kept source is fine; artifacts are not)
+legacy-rust-tauri/target/
+legacy-rust-tauri/src-tauri/target/
+legacy-rust-tauri/src-tauri/gen/
+legacy-rust-tauri/**/node_modules/
+legacy-rust-tauri/ui/dist/
